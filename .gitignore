@@ -1,0 +1,15 @@
+.vs/
+*.csproj
+*.sln
+bin/
+obj/
+*.user
+*.log
+*.tmp
+.vscode/
+.DS_Store
+.idea/
+*.swp
+*.bak
+*.orig
+*.rej

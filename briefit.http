@@ -1,0 +1,6 @@
+@briefit_HostAddress = http://localhost:5228
+
+GET {{briefit_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
