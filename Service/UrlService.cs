@@ -14,7 +14,13 @@ public class UrlService : IUrlService
 
     public async Task<ShortUrlResponse> ShortUrlAsync(ShortUrlRequest request)
     {
+
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+
         var exisitingUrl = await _briefitDbContext.ShortUrls.FirstOrDefaultAsync(u => u.OriginalUrl == request.OriginalUrl);
+
+        Console.WriteLine($"Duplicate check took: {sw.ElapsedMilliseconds} ms");
+
 
         if(exisitingUrl != null)
         {
@@ -27,12 +33,19 @@ public class UrlService : IUrlService
             };
         }
 
+        sw.Restart();
+
+
         var shortCode= ShortCodeGenerator.Generate();
 
         while (await _briefitDbContext.ShortUrls.AnyAsync(u => u.ShortCode == shortCode))
         {
             shortCode = ShortCodeGenerator.Generate();
         }
+
+        Console.WriteLine($"Short code generation took: {sw.ElapsedMilliseconds} ms");
+
+        sw.Restart();
 
         var shortUrlEntity = new ShortUrl   
         {

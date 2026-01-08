@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
@@ -11,7 +10,20 @@ builder.Services.AddScoped<IUrlService, UrlService>();
 
 builder.Services.AddDbContext<BriefitDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("BriefConnectionString"));
+    var stringConnection = options.UseSqlServer(builder.Configuration.GetConnectionString("BriefConnectionString"));
+
+    if (builder.Environment.IsProduction())
+    {
+        var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+        options.UseNpgsql(databaseUrl);
+    }
+    else
+    {
+        var connectionString = builder.Configuration.GetConnectionString("BriefConnectionString");
+
+        options.UseSqlServer(connectionString);
+
+    }
 });
 
 builder.Services.AddCors(options => {
@@ -31,7 +43,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors();
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.MapControllers();
 
