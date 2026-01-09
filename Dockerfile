@@ -25,4 +25,3 @@ ENV ASPNETCORE_URLS=http://+:${PORT}
 
 # Run the app - note: lowercase 'briefit.dll' matches the csproj name
 ENTRYPOINT ["dotnet", "briefit.dll"]
-```
