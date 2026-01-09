@@ -1,22 +1,28 @@
-FROM mcr.microsoft.com/dotnet/sdk:9.0 as build
-workdir /src
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
 
+# Copy solution file from root
+COPY briefit.sln ./
 
-COPY ["Briefit.sln", "./"]
-COPY ["Briefit/Briefit.csproj", "Briefit/"]
-RUN dotnet restore "Briefit/Briefit.csproj"
+# Copy project file
+COPY briefit/briefit.csproj briefit/
+RUN dotnet restore "briefit/briefit.csproj"
 
-
+# Copy everything
 COPY . .
-WORKDIR "/src/Briefit"
-RUN dotnet publish "Briefit.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
+# Build
+WORKDIR /src/briefit
+RUN dotnet publish "briefit.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# Runtime
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
+# Use Render's PORT environment variable
+ENV ASPNETCORE_URLS=http://+:${PORT}
 
-ENV ASPNETCORE_URLS=http://+:5432
-EXPOSE 5432
-
+# Run the app - note: lowercase 'briefit.dll' matches the csproj name
 ENTRYPOINT ["dotnet", "briefit.dll"]
+```
