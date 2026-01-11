@@ -15,8 +15,6 @@ builder.Services.AddScoped<IUrlService, UrlService>();
 
 builder.Services.AddDbContext<BriefitDbContext>(options =>
 {
-    var stringConnection = options.UseSqlServer(builder.Configuration.GetConnectionString("BriefConnectionString"));
-
     if (builder.Environment.IsProduction())
     {
         var databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
