@@ -1,6 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
+
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5228";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
+
 // Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -33,6 +38,9 @@ builder.Services.AddCors(options => {
         .AllowAnyHeader();
     });
 });
+
+
+
 
 var app = builder.Build();
 
