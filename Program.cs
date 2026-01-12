@@ -22,10 +22,11 @@ builder.Services.AddDbContext<BriefitDbContext>(options =>
 
         var uri = new Uri(databaseUrl);
         var userInfo = uri.UserInfo.Split(':');
-        var port =uri.Port > 0 ? uri.Port : 5432;
+        var dbPort =uri.Port > 0 ? uri.Port : 5432;
+        var database = uri.AbsolutePath.TrimStart('/');
         var connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]};SSL Mode=Require;Trust Server Certificate=true";
 
-        Console.WriteLine($"Connecting to database: {uri.Host}:{port}");    
+        Console.WriteLine($"Connecting to database: {uri.Host}:{dbPort}/{database}")    ;    
         options.UseNpgsql(connectionString);
     }
     else
