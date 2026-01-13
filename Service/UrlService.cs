@@ -89,6 +89,18 @@ public class UrlService : IUrlService
 
     private string GetBaseUrl()
     {
-        return _configuration["BaseUrl"] ?? "http://localhost:5228";
+
+        var baseUrl = Environment.GetEnvironmentVariable("BASE_URL");
+        if(!string.IsNullOrEmpty(baseUrl))
+        {
+            return baseUrl;
+        }
+        return _configuration["BaseUrl"] ?? "http://localhost:5228";    
+        
+        // if(_configuration["ASPNETCORE_ENVIRONMENT"] == "Production")
+        // {
+        //     return "https://briefit.onrender.com";
+        // }
+        // return _configuration["BaseUrl"] ?? "http://localhost:5228";
     }
 }
