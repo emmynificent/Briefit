@@ -7,8 +7,12 @@ obj/
 .vscode/
 .DS_Store
 .idea/
+appsettings.Development.json
+appsettings*.json
+!appsettings.json
 *.swp
 *.bak
 *.orig
 *.rej
 *.json
+secrets.json
