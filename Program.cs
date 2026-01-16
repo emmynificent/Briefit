@@ -40,8 +40,8 @@ builder.Services.AddDbContext<BriefitDbContext>(options =>
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowAll", policy => {
         policy.WithOrigins(
-            "http://localhost:5228",
-            "https://briefable.vercel.app/"
+            "http://localhost:5173",
+            "https://briefable.vercel.app"
         )
         .AllowAnyMethod()   
         .AllowAnyHeader();
